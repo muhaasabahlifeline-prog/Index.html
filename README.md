@@ -535,6 +535,6 @@ function createVideoPlan(){
 }
 
 </script>
-
+<script src="config.js"></script>
 </body>
 </html>
