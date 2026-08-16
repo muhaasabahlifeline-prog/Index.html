@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VEX // EVIL CYBORG</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>VEX // EVIL CYBORG V4</title>
 
 <style>
 *{
@@ -15,14 +15,11 @@
 html,body{
     width:100%;
     height:100%;
-    overflow:auto;
+    overflow:hidden;
     background:#020204;
     font-family:Arial,Helvetica,sans-serif;
-    color:white;
-}
-
-body{
-    user-select:none;
+    color:#fff;
+    touch-action:none;
 }
 
 #game{
@@ -33,188 +30,177 @@ body{
     background:
         radial-gradient(
             ellipse at 50% 45%,
-            #390909 0%,
-            #160303 25%,
-            #060608 60%,
+            #420909 0%,
+            #180303 28%,
+            #060608 65%,
             #010102 100%
         );
 }
 
-/* =========================
-   BACKGROUND
-========================= */
+/* BACKGROUND */
 
 .stars{
     position:absolute;
     inset:0;
     background-image:
-        radial-gradient(circle,#ffffff 1px,transparent 1px),
-        radial-gradient(circle,#ff3030 1px,transparent 1px);
+        radial-gradient(circle,#fff 1px,transparent 1px),
+        radial-gradient(circle,#f22 1px,transparent 1px);
     background-size:90px 90px,150px 150px;
     background-position:10px 20px,70px 80px;
-    opacity:.25;
+    opacity:.3;
 }
 
 .city{
     position:absolute;
     bottom:0;
-    left:0;
     width:100%;
-    height:35%;
+    height:34%;
     display:flex;
     align-items:flex-end;
     gap:3px;
-    opacity:.8;
 }
 
 .building{
-    background:linear-gradient(
-        90deg,
-        #050506,
-        #18181b,
-        #050506
-    );
-    border-top:1px solid #333;
     position:relative;
+    background:linear-gradient(90deg,#050506,#18181b,#050506);
+    border-top:1px solid #333;
 }
 
 .building:after{
     content:"";
     position:absolute;
-    inset:10px;
+    inset:8px;
     background:
         repeating-linear-gradient(
             90deg,
-            transparent 0 12px,
-            rgba(255,0,0,.3) 13px 15px
+            transparent 0 13px,
+            rgba(255,0,0,.28) 14px 16px
         ),
         repeating-linear-gradient(
             0deg,
             transparent 0 18px,
-            rgba(255,0,0,.25) 19px 21px
+            rgba(255,0,0,.2) 19px 21px
         );
 }
 
 .ground{
     position:absolute;
-    bottom:0;
     left:-25%;
+    bottom:-5%;
     width:150%;
     height:35%;
     background:
-        linear-gradient(
-            rgba(255,0,0,.12) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,0,0,.12) 1px,
-            transparent 1px
-        );
-    background-size:50px 50px;
-    transform:
-        perspective(300px)
-        rotateX(60deg);
+        linear-gradient(rgba(255,0,0,.12) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,0,0,.12) 1px,transparent 1px);
+    background-size:45px 45px;
+    transform:perspective(300px) rotateX(60deg);
     transform-origin:bottom;
 }
 
-/* =========================
-   LIGHT / ENERGY
-========================= */
+/* ENERGY */
 
 .aura{
     position:absolute;
     left:50%;
     top:48%;
-    width:520px;
-    height:520px;
+    width:500px;
+    height:500px;
     transform:translate(-50%,-50%);
     border-radius:50%;
     background:
         radial-gradient(
             circle,
             rgba(255,0,0,.35),
-            rgba(255,0,0,.1) 35%,
+            rgba(255,0,0,.08) 40%,
             transparent 70%
         );
     filter:blur(12px);
-    animation:auraPulse 1.5s infinite alternate;
+    animation:aura 1.5s infinite alternate;
 }
 
-@keyframes auraPulse{
+@keyframes aura{
     from{
         transform:translate(-50%,-50%) scale(.85);
-        opacity:.5;
     }
     to{
         transform:translate(-50%,-50%) scale(1.15);
-        opacity:1;
     }
 }
 
-/* =========================
-   UI
-========================= */
+/* UI */
 
 .logo{
     position:absolute;
-    top:22px;
-    left:0;
+    top:18px;
     width:100%;
     text-align:center;
-    font-size:clamp(32px,9vw,75px);
+    font-size:clamp(35px,10vw,72px);
     font-weight:900;
-    letter-spacing:12px;
+    letter-spacing:10px;
     z-index:50;
     text-shadow:
         0 0 8px white,
-        0 0 20px red,
-        0 0 50px red;
+        0 0 25px red,
+        0 0 55px red;
 }
 
 .status{
     position:absolute;
-    top:105px;
-    left:0;
+    top:90px;
     width:100%;
     text-align:center;
-    font-size:10px;
-    letter-spacing:4px;
+    font-size:9px;
+    letter-spacing:3px;
     color:#ff3030;
     z-index:50;
-    text-shadow:0 0 12px red;
 }
 
-.controls{
+/* BARS */
+
+.stats{
     position:absolute;
+    top:118px;
     left:50%;
-    bottom:20px;
     transform:translateX(-50%);
+    width:min(300px,80vw);
+    z-index:60;
+}
+
+.stat{
     display:flex;
-    gap:10px;
-    z-index:100;
-}
-
-button{
-    min-width:90px;
-    padding:12px 16px;
-    border:1px solid #ff2020;
-    border-radius:7px;
-    background:rgba(40,0,0,.9);
-    color:white;
+    align-items:center;
+    gap:7px;
+    margin:5px 0;
+    font-size:9px;
     font-weight:bold;
-    letter-spacing:1px;
-    box-shadow:
-        0 0 10px rgba(255,0,0,.4);
 }
 
-button:active{
-    transform:scale(.92);
+.bar{
+    flex:1;
+    height:7px;
+    border:1px solid #555;
+    background:#090909;
+    overflow:hidden;
 }
 
-/* =========================
-   CYBORG
-========================= */
+.fill{
+    height:100%;
+    transition:width .3s;
+}
+
+.hp{
+    width:100%;
+    background:#e00000;
+    box-shadow:0 0 8px red;
+}
+
+.energybar{
+    width:100%;
+    background:#d000ff;
+    box-shadow:0 0 8px #d000ff;
+}
+
+/* CYBORG */
 
 #cyborg{
     position:absolute;
@@ -224,35 +210,23 @@ button:active{
     height:570px;
     transform:translate(-50%,-50%);
     z-index:20;
-    animation:breathing 3s ease-in-out infinite;
+    transition:left .12s linear;
 }
 
-@keyframes breathing{
-    0%,100%{
-        transform:translate(-50%,-50%) scale(1);
+#cyborg.walking{
+    animation:bob .22s infinite alternate;
+}
+
+@keyframes bob{
+    from{
+        transform:translate(-50%,-50%) translateY(0);
     }
-    50%{
-        transform:translate(-50%,-51%) scale(1.018);
+    to{
+        transform:translate(-50%,-50%) translateY(-7px);
     }
 }
 
-/* shadow */
-
-.shadow{
-    position:absolute;
-    left:50%;
-    bottom:0;
-    width:260px;
-    height:30px;
-    transform:translateX(-50%);
-    border-radius:50%;
-    background:#000;
-    box-shadow:0 0 35px #f00;
-}
-
-/* =========================
-   HEAD
-========================= */
+/* HEAD */
 
 .head{
     position:absolute;
@@ -270,12 +244,8 @@ button:active{
             #202124 48%,
             #37393c 100%
         );
-    box-shadow:
-        inset 0 0 25px #000,
-        0 0 30px rgba(255,0,0,.25);
+    box-shadow:inset 0 0 25px #000,0 0 30px rgba(255,0,0,.25);
 }
-
-/* human half */
 
 .human{
     position:absolute;
@@ -284,16 +254,8 @@ button:active{
     width:75px;
     height:163px;
     border-radius:45% 5% 5% 35%;
-    background:
-        linear-gradient(
-            110deg,
-            #633d34,
-            #c28772,
-            #75473c
-        );
+    background:linear-gradient(110deg,#633d34,#c28772,#75473c);
 }
-
-/* mechanical half */
 
 .machine{
     position:absolute;
@@ -302,12 +264,7 @@ button:active{
     width:75px;
     height:163px;
     border-radius:5% 45% 35% 5%;
-    background:
-        repeating-linear-gradient(
-            0deg,
-            #555 0 7px,
-            #17181a 8px 13px
-        );
+    background:repeating-linear-gradient(0deg,#555 0 7px,#17181a 8px 13px);
 }
 
 .machine:before{
@@ -321,39 +278,24 @@ button:active{
     box-shadow:0 0 10px red;
 }
 
-/* eyes */
-
 .eye{
     position:absolute;
     top:63px;
     width:32px;
     height:9px;
     background:#ff1010;
-    box-shadow:
-        0 0 8px red,
-        0 0 25px red;
+    box-shadow:0 0 8px red,0 0 25px red;
     z-index:10;
-    animation:eyePulse .8s infinite alternate;
+    animation:eye .8s infinite alternate;
 }
 
-.eye.left{
-    left:24px;
-}
+.eye.left{left:24px}
+.eye.right{right:24px}
 
-.eye.right{
-    right:24px;
+@keyframes eye{
+    from{opacity:.35}
+    to{opacity:1}
 }
-
-@keyframes eyePulse{
-    from{
-        opacity:.35;
-    }
-    to{
-        opacity:1;
-    }
-}
-
-/* mouth */
 
 .mouth{
     position:absolute;
@@ -365,8 +307,6 @@ button:active{
     border-bottom:3px solid #b00000;
 }
 
-/* neck */
-
 .neck{
     position:absolute;
     left:103px;
@@ -374,18 +314,10 @@ button:active{
     width:70px;
     height:48px;
     border:3px solid #555;
-    background:
-        linear-gradient(
-            90deg,
-            #111,
-            #777,
-            #111
-        );
+    background:linear-gradient(90deg,#111,#777,#111);
 }
 
-/* =========================
-   BODY
-========================= */
+/* BODY */
 
 .torso{
     position:absolute;
@@ -393,39 +325,17 @@ button:active{
     top:195px;
     width:210px;
     height:215px;
-    clip-path:
-        polygon(
-            18% 0,
-            82% 0,
-            100% 100%,
-            0 100%
-        );
-    background:
-        linear-gradient(
-            90deg,
-            #111214,
-            #686b6f 46%,
-            #202124 50%,
-            #37393b
-        );
+    clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);
+    background:linear-gradient(90deg,#111214,#686b6f 46%,#202124 50%,#37393b);
     border:3px solid #555;
-    box-shadow:
-        inset 0 0 35px #000;
+    box-shadow:inset 0 0 35px #000;
 }
-
-/* armor */
 
 .armor{
     position:absolute;
     border:2px solid #555;
-    background:
-        linear-gradient(
-            145deg,
-            #777,
-            #18191b
-        );
-    box-shadow:
-        inset 0 0 15px #000;
+    background:linear-gradient(145deg,#777,#18191b);
+    box-shadow:inset 0 0 15px #000;
 }
 
 .armor.a{
@@ -433,13 +343,6 @@ button:active{
     top:210px;
     width:78px;
     height:78px;
-    clip-path:
-        polygon(
-            20% 0,
-            80% 0,
-            100% 100%,
-            0 100%
-        );
 }
 
 .armor.b{
@@ -447,16 +350,7 @@ button:active{
     top:210px;
     width:78px;
     height:78px;
-    clip-path:
-        polygon(
-            20% 0,
-            80% 0,
-            100% 100%,
-            0 100%
-        );
 }
-
-/* reactor */
 
 .reactor{
     position:absolute;
@@ -466,36 +360,18 @@ button:active{
     height:68px;
     border-radius:50%;
     border:9px solid #252629;
-    background:
-        radial-gradient(
-            circle,
-            #fff 0 8%,
-            #ff3333 18%,
-            #a00000 45%,
-            #050505 52%
-        );
-    box-shadow:
-        0 0 15px red,
-        0 0 40px red,
-        0 0 90px rgba(255,0,0,.6);
-    animation:reactorPulse .5s infinite alternate;
+    background:radial-gradient(circle,#fff 0 8%,#ff3333 18%,#a00000 45%,#050505 52%);
+    box-shadow:0 0 15px red,0 0 40px red,0 0 90px rgba(255,0,0,.6);
+    animation:reactor .5s infinite alternate;
     z-index:15;
 }
 
-@keyframes reactorPulse{
-    from{
-        transform:scale(.88);
-        filter:brightness(.8);
-    }
-    to{
-        transform:scale(1.1);
-        filter:brightness(1.5);
-    }
+@keyframes reactor{
+    from{transform:scale(.88)}
+    to{transform:scale(1.1)}
 }
 
-/* =========================
-   ARMS
-========================= */
+/* ARMS */
 
 .shoulder{
     position:absolute;
@@ -504,20 +380,11 @@ button:active{
     height:58px;
     border:3px solid #555;
     border-radius:50%;
-    background:
-        linear-gradient(
-            #777,
-            #161719
-        );
+    background:linear-gradient(#777,#161719);
 }
 
-.shoulder.left{
-    left:-27px;
-}
-
-.shoulder.right{
-    right:-27px;
-}
+.shoulder.left{left:-27px}
+.shoulder.right{right:-27px}
 
 .arm{
     position:absolute;
@@ -526,15 +393,7 @@ button:active{
     height:190px;
     border:3px solid #555;
     border-radius:30px;
-    background:
-        linear-gradient(
-            90deg,
-            #111,
-            #686b6d,
-            #1b1c1e
-        );
-    box-shadow:
-        inset 0 0 18px #000;
+    background:linear-gradient(90deg,#111,#686b6d,#1b1c1e);
 }
 
 .arm.left{
@@ -547,31 +406,7 @@ button:active{
     transform:rotate(-12deg);
 }
 
-.hand{
-    position:absolute;
-    top:390px;
-    width:66px;
-    height:72px;
-    border:3px solid #555;
-    border-radius:25px;
-    background:
-        linear-gradient(
-            #555,
-            #151617
-        );
-}
-
-.hand.left{
-    left:-15px;
-}
-
-.hand.right{
-    right:-15px;
-}
-
-/* =========================
-   LEGS
-========================= */
+/* WALKING LEGS */
 
 .leg{
     position:absolute;
@@ -579,132 +414,114 @@ button:active{
     width:82px;
     height:155px;
     border:3px solid #555;
-    background:
-        linear-gradient(
-            90deg,
-            #111,
-            #666,
-            #111
-        );
-    box-shadow:
-        inset 0 0 20px #000;
+    background:linear-gradient(90deg,#111,#666,#111);
+    box-shadow:inset 0 0 20px #000;
+    transform-origin:top center;
 }
 
-.leg.left{
-    left:45px;
+.leg.left{left:45px}
+.leg.right{right:45px}
+
+.walking .leg.left{
+    animation:legLeft .22s infinite alternate;
 }
 
-.leg.right{
-    right:45px;
+.walking .leg.right{
+    animation:legRight .22s infinite alternate;
 }
 
-/* =========================
-   ENERGY ARCS
-========================= */
+@keyframes legLeft{
+    from{transform:rotate(10deg)}
+    to{transform:rotate(-10deg)}
+}
 
-.arc{
+@keyframes legRight{
+    from{transform:rotate(-10deg)}
+    to{transform:rotate(10deg)}
+}
+
+/* HANDS */
+
+.hand{
     position:absolute;
-    width:90px;
-    height:3px;
-    background:#ff1111;
-    box-shadow:
-        0 0 10px red,
-        0 0 25px red;
-    opacity:0;
+    top:390px;
+    width:66px;
+    height:72px;
+    border:3px solid #555;
+    border-radius:25px;
+    background:linear-gradient(#555,#151617);
 }
 
-.arc.one{
-    left:0;
-    top:310px;
-    transform:rotate(25deg);
-    animation:arcFlash .8s infinite;
-}
+.hand.left{left:-15px}
+.hand.right{right:-15px}
 
-.arc.two{
-    right:0;
-    top:340px;
-    transform:rotate(-20deg);
-    animation:arcFlash .8s .3s infinite;
-}
-
-@keyframes arcFlash{
-    0%,100%{
-        opacity:0;
-    }
-    30%,60%{
-        opacity:1;
-    }
-}
-
-/* =========================
-   ATTACK MODE
-========================= */
+/* ATTACK */
 
 .attack #cyborg{
     animation:attack .6s ease-in-out;
 }
 
 @keyframes attack{
-    0%{
-        transform:translate(-50%,-50%);
-    }
-
-    35%{
-        transform:
-            translate(-50%,-50%)
-            rotate(-5deg)
-            scale(1.06);
-    }
-
-    65%{
-        transform:
-            translate(-50%,-50%)
-            rotate(5deg)
-            scale(1.06);
-    }
-
-    100%{
-        transform:translate(-50%,-50%);
-    }
+    0%{transform:translate(-50%,-50%)}
+    35%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.07)}
+    65%{transform:translate(-50%,-50%) rotate(6deg) scale(1.07)}
+    100%{transform:translate(-50%,-50%)}
 }
 
-.attack .aura{
-    animation:attackAura .6s;
+/* CONTROLS */
+
+.controls{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:7px;
+    width:95%;
+    z-index:100;
 }
 
-@keyframes attackAura{
-    50%{
-        transform:
-            translate(-50%,-50%)
-            scale(1.8);
-        opacity:1;
-    }
+button{
+    min-width:72px;
+    padding:12px 10px;
+    border:1px solid #e00000;
+    border-radius:7px;
+    background:rgba(35,0,0,.95);
+    color:#fff;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
+    box-shadow:0 0 12px rgba(255,0,0,.35);
 }
 
-/* =========================
-   MOBILE
-========================= */
+button:active{
+    transform:scale(.9);
+}
+
+.move{
+    min-width:60px;
+}
+
+/* MOBILE */
 
 @media(max-width:500px){
 
     #cyborg{
-        transform:
-            translate(-50%,-50%)
-            scale(.78);
+        transform:translate(-50%,-50%) scale(.72);
     }
 
     .logo{
         font-size:42px;
-        letter-spacing:8px;
     }
 
     .status{
-        top:88px;
-        font-size:8px;
+        top:83px;
     }
 
-    .controls{
-        bottom:12px;
+    .stats{
+        top:105px;
     }
 }
 </style>
@@ -714,106 +531,199 @@ button:active{
 
 <div id="game">
 
-    <div class="stars"></div>
+<div class="stars"></div>
 
-    <div class="city">
-        <div class="building" style="height:45%;width:9%"></div>
-        <div class="building" style="height:65%;width:11%"></div>
-        <div class="building" style="height:35%;width:8%"></div>
-        <div class="building" style="height:80%;width:12%"></div>
-        <div class="building" style="height:50%;width:9%"></div>
-        <div class="building" style="height:72%;width:10%"></div>
-        <div class="building" style="height:42%;width:8%"></div>
-        <div class="building" style="height:90%;width:13%"></div>
-        <div class="building" style="height:55%;width:10%"></div>
-        <div class="building" style="height:70%;width:11%"></div>
-        <div class="building" style="height:40%;width:8%"></div>
-    </div>
+<div class="city">
+<div class="building" style="height:45%;width:9%"></div>
+<div class="building" style="height:65%;width:11%"></div>
+<div class="building" style="height:35%;width:8%"></div>
+<div class="building" style="height:80%;width:12%"></div>
+<div class="building" style="height:50%;width:9%"></div>
+<div class="building" style="height:72%;width:10%"></div>
+<div class="building" style="height:42%;width:8%"></div>
+<div class="building" style="height:90%;width:13%"></div>
+<div class="building" style="height:55%;width:10%"></div>
+<div class="building" style="height:70%;width:11%"></div>
+</div>
 
-    <div class="ground"></div>
+<div class="ground"></div>
+<div class="aura"></div>
 
-    <div class="aura"></div>
+<div class="logo">VEX</div>
 
-    <div class="logo">VEX</div>
+<div class="status" id="status">
+CYBERNETIC WAR MACHINE // ONLINE
+</div>
 
-    <div class="status" id="status">
-        CYBERNETIC WAR MACHINE // ONLINE
-    </div>
+<div class="stats">
 
-    <div id="cyborg">
+<div class="stat">
+HP
+<div class="bar">
+<div class="fill hp" id="hp"></div>
+</div>
+</div>
 
-        <div class="head">
-            <div class="human"></div>
-            <div class="machine"></div>
+<div class="stat">
+ENERGY
+<div class="bar">
+<div class="fill energybar" id="energy"></div>
+</div>
+</div>
 
-            <div class="eye left"></div>
-            <div class="eye right"></div>
+</div>
 
-            <div class="mouth"></div>
-        </div>
+<div id="cyborg">
 
-        <div class="neck"></div>
+<div class="head">
+<div class="human"></div>
+<div class="machine"></div>
+<div class="eye left"></div>
+<div class="eye right"></div>
+<div class="mouth"></div>
+</div>
 
-        <div class="shoulder left"></div>
-        <div class="shoulder right"></div>
+<div class="neck"></div>
 
-        <div class="arm left"></div>
-        <div class="arm right"></div>
+<div class="shoulder left"></div>
+<div class="shoulder right"></div>
 
-        <div class="torso"></div>
+<div class="arm left"></div>
+<div class="arm right"></div>
 
-        <div class="armor a"></div>
-        <div class="armor b"></div>
+<div class="torso"></div>
 
-        <div class="reactor"></div>
+<div class="armor a"></div>
+<div class="armor b"></div>
 
-        <div class="hand left"></div>
-        <div class="hand right"></div>
+<div class="reactor"></div>
 
-        <div class="leg left"></div>
-        <div class="leg right"></div>
+<div class="hand left"></div>
+<div class="hand right"></div>
 
-        <div class="arc one"></div>
-        <div class="arc two"></div>
+<div class="leg left"></div>
+<div class="leg right"></div>
 
-        <div class="shadow"></div>
+</div>
 
-    </div>
+<div class="controls">
 
-    <div class="controls">
+<button class="move"
+onclick="move(-1)">
+◀ LEFT
+</button>
 
-        <button onclick="scan()">
-            SCAN
-        </button>
+<button
+onclick="scan()">
+SCAN
+</button>
 
-        <button onclick="attack()">
-            ATTACK
-        </button>
+<button
+onclick="attack()">
+ATTACK
+</button>
 
-    </div>
+<button class="move"
+onclick="move(1)">
+RIGHT ▶
+</button>
+
+</div>
 
 </div>
 
 <script>
 
-function scan(){
+let position = 50;
 
-    const status =
-        document.getElementById("status");
+let hp = 100;
+
+let energy = 100;
+
+const cyborg =
+document.getElementById("cyborg");
+
+const status =
+document.getElementById("status");
+
+const hpBar =
+document.getElementById("hp");
+
+const energyBar =
+document.getElementById("energy");
+
+
+function move(direction){
+
+    position += direction * 6;
+
+    if(position < 18){
+        position = 18;
+    }
+
+    if(position > 82){
+        position = 82;
+    }
+
+    cyborg.style.left = position + "%";
+
+    cyborg.classList.add("walking");
 
     status.innerText =
-        "SCANNING TARGET...";
+        direction < 0
+        ? "MOVING LEFT // TARGET HUNT"
+        : "MOVING RIGHT // TARGET HUNT";
+
+    setTimeout(function(){
+
+        cyborg.classList.remove("walking");
+
+        status.innerText =
+            "CYBERNETIC WAR MACHINE // ONLINE";
+
+    },600);
+
+    energy -= 4;
+
+    if(energy < 0){
+        energy = 0;
+    }
+
+    updateBars();
+}
+
+
+function scan(){
+
+    status.innerText =
+        "SCANNING AREA...";
 
     setTimeout(function(){
 
         status.innerText =
-            "TARGET LOCKED // THREAT: EXTREME";
+            "TARGET DETECTED // THREAT: EXTREME";
 
     },1000);
+
+    energy -= 8;
+
+    if(energy < 0){
+        energy = 0;
+    }
+
+    updateBars();
 }
 
 
 function attack(){
+
+    if(energy < 15){
+
+        status.innerText =
+            "INSUFFICIENT ENERGY";
+
+        return;
+    }
 
     const game =
         document.getElementById("game");
@@ -824,8 +734,12 @@ function attack(){
 
     game.classList.add("attack");
 
-    document.getElementById("status").innerText =
+    status.innerText =
         "WEAPON SYSTEM ACTIVATED";
+
+    energy -= 15;
+
+    updateBars();
 
     if(navigator.vibrate){
 
@@ -839,12 +753,36 @@ function attack(){
 
         game.classList.remove("attack");
 
-        document.getElementById("status").innerText =
+        status.innerText =
             "CYBERNETIC WAR MACHINE // ONLINE";
 
     },900);
-
 }
+
+
+function updateBars(){
+
+    hpBar.style.width =
+        hp + "%";
+
+    energyBar.style.width =
+        energy + "%";
+}
+
+
+/* ENERGY REGENERATION */
+
+setInterval(function(){
+
+    if(energy < 100){
+
+        energy += 1;
+
+        updateBars();
+
+    }
+
+},1000);
 
 </script>
 
