@@ -15,7 +15,7 @@
 html,body{
     width:100%;
     height:100%;
-    overflow:hidden;
+    overflow:auto;
     background:#020204;
     font-family:Arial,Helvetica,sans-serif;
     color:white;
