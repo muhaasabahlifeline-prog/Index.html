@@ -1,788 +1,538 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<title>VEX // EVIL CYBORG V4</title>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>LONGVIDEO AI</title>
 
 <style>
+
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  box-sizing:border-box;
 }
 
-html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#020204;
-    font-family:Arial,Helvetica,sans-serif;
-    color:#fff;
-    touch-action:none;
+body{
+  margin:0;
+  background:#07070a;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-#game{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    overflow:hidden;
-    background:
-        radial-gradient(
-            ellipse at 50% 45%,
-            #420909 0%,
-            #180303 28%,
-            #060608 65%,
-            #010102 100%
-        );
+.app{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
 }
 
-/* BACKGROUND */
-
-.stars{
-    position:absolute;
-    inset:0;
-    background-image:
-        radial-gradient(circle,#fff 1px,transparent 1px),
-        radial-gradient(circle,#f22 1px,transparent 1px);
-    background-size:90px 90px,150px 150px;
-    background-position:10px 20px,70px 80px;
-    opacity:.3;
+header{
+  padding:20px 0 30px;
 }
-
-.city{
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:34%;
-    display:flex;
-    align-items:flex-end;
-    gap:3px;
-}
-
-.building{
-    position:relative;
-    background:linear-gradient(90deg,#050506,#18181b,#050506);
-    border-top:1px solid #333;
-}
-
-.building:after{
-    content:"";
-    position:absolute;
-    inset:8px;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            transparent 0 13px,
-            rgba(255,0,0,.28) 14px 16px
-        ),
-        repeating-linear-gradient(
-            0deg,
-            transparent 0 18px,
-            rgba(255,0,0,.2) 19px 21px
-        );
-}
-
-.ground{
-    position:absolute;
-    left:-25%;
-    bottom:-5%;
-    width:150%;
-    height:35%;
-    background:
-        linear-gradient(rgba(255,0,0,.12) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,0,0,.12) 1px,transparent 1px);
-    background-size:45px 45px;
-    transform:perspective(300px) rotateX(60deg);
-    transform-origin:bottom;
-}
-
-/* ENERGY */
-
-.aura{
-    position:absolute;
-    left:50%;
-    top:48%;
-    width:500px;
-    height:500px;
-    transform:translate(-50%,-50%);
-    border-radius:50%;
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,0,0,.35),
-            rgba(255,0,0,.08) 40%,
-            transparent 70%
-        );
-    filter:blur(12px);
-    animation:aura 1.5s infinite alternate;
-}
-
-@keyframes aura{
-    from{
-        transform:translate(-50%,-50%) scale(.85);
-    }
-    to{
-        transform:translate(-50%,-50%) scale(1.15);
-    }
-}
-
-/* UI */
 
 .logo{
-    position:absolute;
-    top:18px;
-    width:100%;
-    text-align:center;
-    font-size:clamp(35px,10vw,72px);
-    font-weight:900;
-    letter-spacing:10px;
-    z-index:50;
-    text-shadow:
-        0 0 8px white,
-        0 0 25px red,
-        0 0 55px red;
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:2px;
 }
 
-.status{
-    position:absolute;
-    top:90px;
-    width:100%;
-    text-align:center;
-    font-size:9px;
-    letter-spacing:3px;
-    color:#ff3030;
-    z-index:50;
+.logo span{
+  color:#8b5cf6;
 }
 
-/* BARS */
-
-.stats{
-    position:absolute;
-    top:118px;
-    left:50%;
-    transform:translateX(-50%);
-    width:min(300px,80vw);
-    z-index:60;
+.subtitle{
+  color:#999;
+  margin-top:8px;
 }
 
-.stat{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    margin:5px 0;
-    font-size:9px;
-    font-weight:bold;
+.card{
+  background:#111116;
+  border:1px solid #24242c;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:16px;
 }
 
-.bar{
-    flex:1;
-    height:7px;
-    border:1px solid #555;
-    background:#090909;
-    overflow:hidden;
+label{
+  display:block;
+  margin-bottom:8px;
+  color:#bbb;
+  font-size:14px;
 }
 
-.fill{
-    height:100%;
-    transition:width .3s;
+textarea,
+select,
+input{
+  width:100%;
+  background:#08080c;
+  border:1px solid #30303a;
+  border-radius:10px;
+  color:white;
+  padding:14px;
+  font-size:15px;
 }
 
-.hp{
-    width:100%;
-    background:#e00000;
-    box-shadow:0 0 8px red;
+textarea{
+  min-height:150px;
+  resize:vertical;
 }
 
-.energybar{
-    width:100%;
-    background:#d000ff;
-    box-shadow:0 0 8px #d000ff;
-}
-
-/* CYBORG */
-
-#cyborg{
-    position:absolute;
-    left:50%;
-    top:53%;
-    width:280px;
-    height:570px;
-    transform:translate(-50%,-50%);
-    z-index:20;
-    transition:left .12s linear;
-}
-
-#cyborg.walking{
-    animation:bob .22s infinite alternate;
-}
-
-@keyframes bob{
-    from{
-        transform:translate(-50%,-50%) translateY(0);
-    }
-    to{
-        transform:translate(-50%,-50%) translateY(-7px);
-    }
-}
-
-/* HEAD */
-
-.head{
-    position:absolute;
-    left:58px;
-    top:0;
-    width:164px;
-    height:175px;
-    border:3px solid #666;
-    border-radius:48% 48% 38% 38%;
-    background:
-        linear-gradient(
-            90deg,
-            #151619 0%,
-            #777 47%,
-            #202124 48%,
-            #37393c 100%
-        );
-    box-shadow:inset 0 0 25px #000,0 0 30px rgba(255,0,0,.25);
-}
-
-.human{
-    position:absolute;
-    left:4px;
-    top:4px;
-    width:75px;
-    height:163px;
-    border-radius:45% 5% 5% 35%;
-    background:linear-gradient(110deg,#633d34,#c28772,#75473c);
-}
-
-.machine{
-    position:absolute;
-    right:4px;
-    top:4px;
-    width:75px;
-    height:163px;
-    border-radius:5% 45% 35% 5%;
-    background:repeating-linear-gradient(0deg,#555 0 7px,#17181a 8px 13px);
-}
-
-.machine:before{
-    content:"";
-    position:absolute;
-    top:18px;
-    left:15px;
-    width:3px;
-    height:120px;
-    background:#b00000;
-    box-shadow:0 0 10px red;
-}
-
-.eye{
-    position:absolute;
-    top:63px;
-    width:32px;
-    height:9px;
-    background:#ff1010;
-    box-shadow:0 0 8px red,0 0 25px red;
-    z-index:10;
-    animation:eye .8s infinite alternate;
-}
-
-.eye.left{left:24px}
-.eye.right{right:24px}
-
-@keyframes eye{
-    from{opacity:.35}
-    to{opacity:1}
-}
-
-.mouth{
-    position:absolute;
-    left:53px;
-    bottom:25px;
-    width:58px;
-    height:11px;
-    background:#020202;
-    border-bottom:3px solid #b00000;
-}
-
-.neck{
-    position:absolute;
-    left:103px;
-    top:166px;
-    width:70px;
-    height:48px;
-    border:3px solid #555;
-    background:linear-gradient(90deg,#111,#777,#111);
-}
-
-/* BODY */
-
-.torso{
-    position:absolute;
-    left:35px;
-    top:195px;
-    width:210px;
-    height:215px;
-    clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);
-    background:linear-gradient(90deg,#111214,#686b6f 46%,#202124 50%,#37393b);
-    border:3px solid #555;
-    box-shadow:inset 0 0 35px #000;
-}
-
-.armor{
-    position:absolute;
-    border:2px solid #555;
-    background:linear-gradient(145deg,#777,#18191b);
-    box-shadow:inset 0 0 15px #000;
-}
-
-.armor.a{
-    left:53px;
-    top:210px;
-    width:78px;
-    height:78px;
-}
-
-.armor.b{
-    right:52px;
-    top:210px;
-    width:78px;
-    height:78px;
-}
-
-.reactor{
-    position:absolute;
-    left:103px;
-    top:262px;
-    width:68px;
-    height:68px;
-    border-radius:50%;
-    border:9px solid #252629;
-    background:radial-gradient(circle,#fff 0 8%,#ff3333 18%,#a00000 45%,#050505 52%);
-    box-shadow:0 0 15px red,0 0 40px red,0 0 90px rgba(255,0,0,.6);
-    animation:reactor .5s infinite alternate;
-    z-index:15;
-}
-
-@keyframes reactor{
-    from{transform:scale(.88)}
-    to{transform:scale(1.1)}
-}
-
-/* ARMS */
-
-.shoulder{
-    position:absolute;
-    top:190px;
-    width:78px;
-    height:58px;
-    border:3px solid #555;
-    border-radius:50%;
-    background:linear-gradient(#777,#161719);
-}
-
-.shoulder.left{left:-27px}
-.shoulder.right{right:-27px}
-
-.arm{
-    position:absolute;
-    top:215px;
-    width:60px;
-    height:190px;
-    border:3px solid #555;
-    border-radius:30px;
-    background:linear-gradient(90deg,#111,#686b6d,#1b1c1e);
-}
-
-.arm.left{
-    left:-10px;
-    transform:rotate(12deg);
-}
-
-.arm.right{
-    right:-10px;
-    transform:rotate(-12deg);
-}
-
-/* WALKING LEGS */
-
-.leg{
-    position:absolute;
-    top:390px;
-    width:82px;
-    height:155px;
-    border:3px solid #555;
-    background:linear-gradient(90deg,#111,#666,#111);
-    box-shadow:inset 0 0 20px #000;
-    transform-origin:top center;
-}
-
-.leg.left{left:45px}
-.leg.right{right:45px}
-
-.walking .leg.left{
-    animation:legLeft .22s infinite alternate;
-}
-
-.walking .leg.right{
-    animation:legRight .22s infinite alternate;
-}
-
-@keyframes legLeft{
-    from{transform:rotate(10deg)}
-    to{transform:rotate(-10deg)}
-}
-
-@keyframes legRight{
-    from{transform:rotate(-10deg)}
-    to{transform:rotate(10deg)}
-}
-
-/* HANDS */
-
-.hand{
-    position:absolute;
-    top:390px;
-    width:66px;
-    height:72px;
-    border:3px solid #555;
-    border-radius:25px;
-    background:linear-gradient(#555,#151617);
-}
-
-.hand.left{left:-15px}
-.hand.right{right:-15px}
-
-/* ATTACK */
-
-.attack #cyborg{
-    animation:attack .6s ease-in-out;
-}
-
-@keyframes attack{
-    0%{transform:translate(-50%,-50%)}
-    35%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.07)}
-    65%{transform:translate(-50%,-50%) rotate(6deg) scale(1.07)}
-    100%{transform:translate(-50%,-50%)}
-}
-
-/* CONTROLS */
-
-.controls{
-    position:absolute;
-    bottom:18px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:7px;
-    width:95%;
-    z-index:100;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
 }
 
 button{
-    min-width:72px;
-    padding:12px 10px;
-    border:1px solid #e00000;
-    border-radius:7px;
-    background:rgba(35,0,0,.95);
-    color:#fff;
-    font-size:11px;
-    font-weight:bold;
-    letter-spacing:1px;
-    box-shadow:0 0 12px rgba(255,0,0,.35);
+  width:100%;
+  border:0;
+  border-radius:11px;
+  padding:15px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-button:active{
-    transform:scale(.9);
+.generate{
+  background:#7c3aed;
+  color:white;
+  margin-top:15px;
 }
 
-.move{
-    min-width:60px;
+.generate:active{
+  transform:scale(.98);
 }
 
-/* MOBILE */
-
-@media(max-width:500px){
-
-    #cyborg{
-        transform:translate(-50%,-50%) scale(.72);
-    }
-
-    .logo{
-        font-size:42px;
-    }
-
-    .status{
-        top:83px;
-    }
-
-    .stats{
-        top:105px;
-    }
+.progress{
+  height:10px;
+  background:#202027;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:15px;
 }
+
+.progressBar{
+  width:0%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    #7c3aed,
+    #c084fc
+  );
+  transition:width .3s;
+}
+
+.status{
+  margin-top:12px;
+  color:#aaa;
+  font-size:14px;
+}
+
+.sceneList{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:15px;
+}
+
+.scene{
+  background:#09090d;
+  border:1px solid #292932;
+  border-radius:10px;
+  padding:12px;
+}
+
+.scene strong{
+  color:#c084fc;
+}
+
+.preview{
+  min-height:220px;
+  border:1px dashed #333;
+  border-radius:12px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:#777;
+}
+
+.small{
+  color:#777;
+  font-size:12px;
+  margin-top:8px;
+}
+
+@media(max-width:650px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .app{
+    padding:14px;
+  }
+
+  .logo{
+    font-size:27px;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div id="game">
+<div class="app">
 
-<div class="stars"></div>
+<header>
 
-<div class="city">
-<div class="building" style="height:45%;width:9%"></div>
-<div class="building" style="height:65%;width:11%"></div>
-<div class="building" style="height:35%;width:8%"></div>
-<div class="building" style="height:80%;width:12%"></div>
-<div class="building" style="height:50%;width:9%"></div>
-<div class="building" style="height:72%;width:10%"></div>
-<div class="building" style="height:42%;width:8%"></div>
-<div class="building" style="height:90%;width:13%"></div>
-<div class="building" style="height:55%;width:10%"></div>
-<div class="building" style="height:70%;width:11%"></div>
+<div class="logo">
+LONGVIDEO <span>AI</span>
 </div>
 
-<div class="ground"></div>
-<div class="aura"></div>
-
-<div class="logo">VEX</div>
-
-<div class="status" id="status">
-CYBERNETIC WAR MACHINE // ONLINE
+<div class="subtitle">
+Create long-form AI videos from one idea.
 </div>
 
-<div class="stats">
+</header>
 
-<div class="stat">
-HP
-<div class="bar">
-<div class="fill hp" id="hp"></div>
-</div>
-</div>
 
-<div class="stat">
-ENERGY
-<div class="bar">
-<div class="fill energybar" id="energy"></div>
-</div>
-</div>
+<div class="card">
+
+<label>
+Wat wil je maken?
+</label>
+
+<textarea
+id="prompt"
+placeholder="Bijvoorbeeld:
+
+Maak een donkere cinematografische superheldenfilm over een half menselijke, half mechanische krijger die ontdekt dat hij de laatste verdediger van de aarde is."
+></textarea>
 
 </div>
 
-<div id="cyborg">
 
-<div class="head">
-<div class="human"></div>
-<div class="machine"></div>
-<div class="eye left"></div>
-<div class="eye right"></div>
-<div class="mouth"></div>
+<div class="card">
+
+<div class="grid">
+
+<div>
+
+<label>
+Videolengte
+</label>
+
+<select id="duration">
+
+<option value="60">
+1 minuut
+</option>
+
+<option value="300">
+5 minuten
+</option>
+
+<option value="600">
+10 minuten
+</option>
+
+<option value="1200">
+20 minuten
+</option>
+
+<option value="1800">
+30 minuten
+</option>
+
+</select>
+
 </div>
 
-<div class="neck"></div>
 
-<div class="shoulder left"></div>
-<div class="shoulder right"></div>
+<div>
 
-<div class="arm left"></div>
-<div class="arm right"></div>
+<label>
+Resolutie
+</label>
 
-<div class="torso"></div>
+<select id="resolution">
 
-<div class="armor a"></div>
-<div class="armor b"></div>
+<option value="480p">
+480p
+</option>
 
-<div class="reactor"></div>
+<option value="720p">
+720p HD
+</option>
 
-<div class="hand left"></div>
-<div class="hand right"></div>
+<option value="1080p">
+1080p Full HD
+</option>
 
-<div class="leg left"></div>
-<div class="leg right"></div>
+</select>
 
 </div>
 
-<div class="controls">
 
-<button class="move"
-onclick="move(-1)">
-◀ LEFT
-</button>
+<div>
+
+<label>
+Beeldverhouding
+</label>
+
+<select id="aspect">
+
+<option value="16:9">
+16:9 YouTube
+</option>
+
+<option value="9:16">
+9:16 TikTok
+</option>
+
+<option value="1:1">
+1:1
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+Stijl
+</label>
+
+<select id="style">
+
+<option>
+Cinematic
+</option>
+
+<option>
+Realistic
+</option>
+
+<option>
+Anime
+</option>
+
+<option>
+3D Animation
+</option>
+
+<option>
+Dark Fantasy
+</option>
+
+<option>
+Documentary
+</option>
+
+</select>
+
+</div>
+
+</div>
 
 <button
-onclick="scan()">
-SCAN
-</button>
-
-<button
-onclick="attack()">
-ATTACK
-</button>
-
-<button class="move"
-onclick="move(1)">
-RIGHT ▶
+class="generate"
+onclick="createVideoPlan()"
+>
+CREATE VIDEO
 </button>
 
 </div>
 
+
+<div class="card">
+
+<h2>
+Video Planner
+</h2>
+
+<div
+class="status"
+id="status"
+>
+Ready.
 </div>
+
+<div class="progress">
+
+<div
+class="progressBar"
+id="progress"
+></div>
+
+</div>
+
+<div
+class="sceneList"
+id="sceneList"
+></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Video Output
+</h2>
+
+<div class="preview">
+
+<div>
+
+VIDEO PREVIEW
+
+<br><br>
+
+<span>
+De gegenereerde video verschijnt hier.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 
 <script>
 
-let position = 50;
+function createVideoPlan(){
 
-let hp = 100;
+  const prompt =
+    document.getElementById("prompt").value.trim();
 
-let energy = 100;
+  const duration =
+    Number(
+      document.getElementById("duration").value
+    );
 
-const cyborg =
-document.getElementById("cyborg");
+  const resolution =
+    document.getElementById("resolution").value;
 
-const status =
-document.getElementById("status");
+  const aspect =
+    document.getElementById("aspect").value;
 
-const hpBar =
-document.getElementById("hp");
+  const style =
+    document.getElementById("style").value;
 
-const energyBar =
-document.getElementById("energy");
+  const status =
+    document.getElementById("status");
+
+  const progress =
+    document.getElementById("progress");
+
+  const sceneList =
+    document.getElementById("sceneList");
 
 
-function move(direction){
-
-    position += direction * 6;
-
-    if(position < 18){
-        position = 18;
-    }
-
-    if(position > 82){
-        position = 82;
-    }
-
-    cyborg.style.left = position + "%";
-
-    cyborg.classList.add("walking");
+  if(!prompt){
 
     status.innerText =
-        direction < 0
-        ? "MOVING LEFT // TARGET HUNT"
-        : "MOVING RIGHT // TARGET HUNT";
+      "Voer eerst een verhaal of video-idee in.";
 
-    setTimeout(function(){
+    return;
 
-        cyborg.classList.remove("walking");
-
-        status.innerText =
-            "CYBERNETIC WAR MACHINE // ONLINE";
-
-    },600);
-
-    energy -= 4;
-
-    if(energy < 0){
-        energy = 0;
-    }
-
-    updateBars();
-}
+  }
 
 
-function scan(){
+  sceneList.innerHTML = "";
 
-    status.innerText =
-        "SCANNING AREA...";
-
-    setTimeout(function(){
-
-        status.innerText =
-            "TARGET DETECTED // THREAT: EXTREME";
-
-    },1000);
-
-    energy -= 8;
-
-    if(energy < 0){
-        energy = 0;
-    }
-
-    updateBars();
-}
+  status.innerText =
+    "Video-project voorbereiden...";
 
 
-function attack(){
+  /*
+    We gebruiken korte AI-clips als bouwstenen.
 
-    if(energy < 15){
+    Voorlopig:
+    10 seconden per scène.
+  */
 
-        status.innerText =
-            "INSUFFICIENT ENERGY";
+  const sceneLength = 10;
 
-        return;
-    }
+  const sceneCount =
+    Math.ceil(duration / sceneLength);
 
-    const game =
-        document.getElementById("game");
 
-    game.classList.remove("attack");
+  for(
+    let i = 1;
+    i <= sceneCount;
+    i++
+  ){
 
-    void game.offsetWidth;
+    const scene =
+      document.createElement("div");
 
-    game.classList.add("attack");
+    scene.className = "scene";
 
-    status.innerText =
-        "WEAPON SYSTEM ACTIVATED";
+    scene.innerHTML = `
+      <strong>Scene ${i}</strong>
+      <br>
+      ${style} • ${resolution} • ${aspect}
+      <br>
+      <span class="small">
+      Waiting for AI generation...
+      </span>
+    `;
 
-    energy -= 15;
+    sceneList.appendChild(scene);
 
-    updateBars();
+  }
 
-    if(navigator.vibrate){
 
-        navigator.vibrate(
-            [80,40,150]
-        );
+  let value = 0;
 
-    }
 
-    setTimeout(function(){
+  const timer =
+    setInterval(function(){
 
-        game.classList.remove("attack");
+      value += 5;
+
+      progress.style.width =
+        value + "%";
+
+
+      if(value >= 100){
+
+        clearInterval(timer);
 
         status.innerText =
-            "CYBERNETIC WAR MACHINE // ONLINE";
+          "PROJECT READY — AI BACKEND NEEDED";
 
-    },900);
+      }
+
+    },100);
+
+
+  console.log({
+
+    prompt,
+    duration,
+    resolution,
+    aspect,
+    style,
+    sceneCount
+
+  });
+
 }
-
-
-function updateBars(){
-
-    hpBar.style.width =
-        hp + "%";
-
-    energyBar.style.width =
-        energy + "%";
-}
-
-
-/* ENERGY REGENERATION */
-
-setInterval(function(){
-
-    if(energy < 100){
-
-        energy += 1;
-
-        updateBars();
-
-    }
-
-},1000);
 
 </script>
 
