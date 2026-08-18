@@ -536,5 +536,72 @@ function createVideoPlan(){
 
 </script>
 <script src="config.js"></script>
+<script>
+const AI_ROUTER_URL = "https://ai-video-router.onrender.com";
+
+async function getNextVideoProvider() {
+    try {
+        const response = await fetch(
+            `${AI_ROUTER_URL}/next-provider`
+        );
+
+        if (!response.ok) {
+            throw new Error("Router unavailable");
+        }
+
+        const data = await response.json();
+
+        console.log("Selected AI provider:", data.provider);
+
+        return data.provider;
+
+    } catch (error) {
+        console.error("AI Router error:", error);
+
+        return null;
+    }
+}
+
+async function requestVideoGeneration(prompt, image = null) {
+    try {
+
+        const response = await fetch(
+            `${AI_ROUTER_URL}/generate`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    prompt: prompt,
+                    image: image,
+                    duration: 5,
+                    aspectRatio: "16:9"
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("Video job:", data);
+
+        return data;
+
+    } catch (error) {
+
+        console.error(
+            "Video generation error:",
+            error
+        );
+
+        return {
+            success: false,
+            error: error.message
+        };
+    }
+}
+</script>
 </body>
 </html>
